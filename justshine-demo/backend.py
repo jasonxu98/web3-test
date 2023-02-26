@@ -14,18 +14,27 @@ SELLER = None
 @app.route('/view', methods=['GET'])
 def view_certificate():
 	# view NFT info, based on wallet
-	wallet_address = int(request.args.get('wallet_address'))
+    print("processing incoming get request ...")
+    wallet_address = str(request.args.get('wallet_address'))
 
 	# try to fetch the user's balances
-	asset_balances = CLIENT.account_info(wallet_address)['assets']
-
-	return str(asset_balances)
-
+    asset_balances = None
+    try:
+        asset_balances = CLIENT.account_info(wallet_address)['assets']
+    except:
+        pass
+        
+    data = {
+        "wallet_address": wallet_address,
+        "balances": asset_balances,
+    }
+    return jsonify(data)
+    
 #curl -X POST -H "Content-Type: application/json" -d '{"v1":"2"}' http://127.0.0.1:5000/trade
 @app.route('/trade', methods=['POST'])
 def purchase():
-	# Seller should initialize a NFT to sell
-	nftAmount = 1
+    # Seller should initialize a NFT to sell
+    nftAmount = 1
     nftID = createDummyAsset(CLIENT, nftAmount, seller)
     print("The NFT ID to sell is", nftID)
 
