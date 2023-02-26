@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-#
+#curl 'http://127.0.0.1:5000/view?wallet_id=1'
 @app.route('/view', methods=['GET'])
 def view_certificate():
 	# view NFT info, based on wallet
